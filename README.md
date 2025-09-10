@@ -1,1 +1,2 @@
-# Sistemas-de-informaci-n
+# Sistemas-de-informacion
+Mauricio Rodriguez Gaytán 
