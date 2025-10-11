@@ -23,9 +23,9 @@ app.post('/add', (req, res) => {
     const { numero_oficio, nombre, seccion, fecha, hash } = req.body;
 
     // Corregido: Se inserta en la tabla "oficio"
-    const insertarRegistro = 'INSERT INTO oficio (numero_oficio, nombre, seccion, fecha, hash) VALUES (?, ?, ?, ?, ?)';
+    const insertarRegistro = 'INSERT INTO oficio (nombre, seccion, fecha, hash) VALUES (?, ?, ?, ?)';
 
-    db.query(insertarRegistro, [numero_oficio, nombre, seccion, fecha, hash], (err, result) => {
+    db.query(insertarRegistro, [nombre, seccion, fecha, hash], (err, result) => {
         if (err) {
             console.error('No se pudo insertar el registro:', err);
         } else {
@@ -35,13 +35,13 @@ app.post('/add', (req, res) => {
 });
 
 // RUTA 3: Mostrar el formulario para editar un oficio específico
-app.get('/edit/:id', (req, res) => {
-    const { id } = req.params;
+app.get('/edit/:numero_oficio', (req, res) => {
+    const { numero_oficio } = req.params;
     
     // Corregido: Se busca en la tabla "oficio"
-    const buscarOficio = 'SELECT * FROM oficio WHERE id = ?';
+    const buscarOficio = 'SELECT * FROM oficio WHERE numero_oficio = ?';
 
-    db.query(buscarOficio, [id], (err, results) => {
+    db.query(buscarOficio, [numero_oficio], (err, results) => {
         if (err) {
             console.error('Error al buscar el oficio:', err);
             return res.send('Error en la base de datos');
@@ -55,14 +55,15 @@ app.get('/edit/:id', (req, res) => {
 });
 
 // RUTA 4: Actualizar la información de un oficio en la base de datos
-app.post('/update/:id', (req, res) => {
-    const { id } = req.params;
-    const { numero_oficio, nombre, seccion, fecha, hash } = req.body;
+app.post('/update/:numero_oficio', (req, res) => {
+    const { numero_oficio } = req.params;
+    const { nombre, seccion, fecha } = req.body;
 
-    // Corregido: Se actualiza en la tabla "oficio"
-    const actualizarOficio = 'UPDATE oficio SET numero_oficio = ?, nombre = ?, seccion = ?, fecha = ?, hash = ? WHERE id = ?';
+    // CORRECCIÓN 1: Se eliminó la coma extra antes de WHERE
+    const actualizarOficio = 'UPDATE oficio SET nombre = ?, seccion = ?, fecha = ? WHERE numero_oficio = ?';
 
-    db.query(actualizarOficio, [numero_oficio, nombre, seccion, fecha, hash, id], (err) => {
+    // CORRECCIÓN 2: Se añadió la variable 'numero_oficio' a los parámetros de la consulta
+    db.query(actualizarOficio, [nombre, seccion, fecha, numero_oficio], (err) => {
         if (err) {
             console.error("Error al actualizar el oficio:", err);
             res.send("Error al actualizar");
@@ -73,13 +74,13 @@ app.post('/update/:id', (req, res) => {
 });
 
 // RUTA 5: Eliminar un oficio de la base de datos
-app.get('/delete/:id', (req, res) => {
-    const { id } = req.params;
+app.get('/delete/:numero_oficio', (req, res) => { // Cambiado de :id a :numero_oficio
+    const { numero_oficio } = req.params;
     
-    // Corregido: Se elimina de la tabla "oficio"
-    const eliminarOficio = 'DELETE FROM oficio WHERE id = ?';
+    // Cambiado de id a numero_oficio en la consulta
+    const eliminarOficio = 'DELETE FROM oficio WHERE numero_oficio = ?'; 
 
-    db.query(eliminarOficio, [id], (err) => {
+    db.query(eliminarOficio, [numero_oficio], (err) => { // Pasando el parámetro correcto
         if (err) {
             console.error('Error al eliminar el registro:', err);
             res.send("Error al eliminar el oficio");

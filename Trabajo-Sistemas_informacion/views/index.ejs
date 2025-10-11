@@ -28,7 +28,7 @@
                 <td><%= oficio.hash %></td>
                 <td>
                     <a href="/edit/<%=oficio.numero_oficio%>">Editar</a>
-                    <br>
+                    <br><br>
                     <a href="/delete/<%=oficio.numero_oficio%>">Eliminar</a>
                 </td>
             </tr>
@@ -50,6 +50,10 @@
             
             <label for="fecha">Fecha</label>
             <input type="date" id="fecha" name="fecha">
+            <br><br>
+
+            <label for="hash">Hash</label>
+            <input type="text" id="hash" name="hash" maxlength="45">
             <br><br>
             <button type="submit">Agregar</button>
         </form>
