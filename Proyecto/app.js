@@ -65,5 +65,5 @@ app.use('/', checkAuth, rutas);
 //Iniciar el servidor
 
 app.listen(port, () => {
-    console.log(`Servidor iniciado en http://127.0.0.1:${port}`);
+    console.log(`Servidor iniciado`);
 });
